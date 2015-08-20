@@ -30,24 +30,37 @@ class JSONParser:
         return self.__extract_columns(json_data, paths)
 
     def __extract_columns(self, row, paths):
-        result = []
-        for path in paths:
-            #print "Extract path:", self.column_paths
-            path_elems = path.split(".")
-            start = row
-            found = True
-            for path_elem in path_elems:
-                if path_elem in start:
-                    start = start[path_elem]
-                else:
-                    found = False
-                    break
+        start = self.to_list(row)
+        found = True
+        for path_elem in paths:
+            start = self.__extract_elements(start, path_elem)
+            if len(start) == 0:
+                found = False
+                break
 
-            if found:
-                if type(start) == list:
-                    start =  ", ".join(start)
-                result.append(start)
-            else:
-                result.append("")
-        #print "Extracted:", result
+        if found:
+            if isinstance(start, list):
+                for elem in start:
+                    if "uri" in elem:
+                        yield elem
+            elif "uri" in start:
+                yield start
+
+    def __extract_elements(self, array, elem_name):
+        result = []
+        for elem in array:
+            if elem_name in elem:
+                elem_part = elem[elem_name]
+                if isinstance(elem_part, list):
+                    result.extend(elem_part)
+                else:
+                    result.append(elem_part)
         return result
+
+
+    def to_list(self, some_object):
+        if not isinstance(some_object, list):
+            arr = list()
+            arr.append(some_object)
+            return arr
+        return some_object
