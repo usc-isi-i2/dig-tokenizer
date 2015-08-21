@@ -20,6 +20,7 @@ class JSONParser:
         json_data = json.loads(x)
         value = self.__extract_columns(json_data, paths)
         key = json_data[key_name]
+        print "Return:", key, "value:", value
         return key, value
 
     def parse_values(self, x):
@@ -41,9 +42,9 @@ class JSONParser:
         if found:
             if isinstance(start, list):
                 for elem in start:
-                    if "uri" in elem:
-                        yield elem
-            elif "uri" in start:
+                   yield elem
+
+            else:
                 yield start
 
     def __extract_elements(self, array, elem_name):
