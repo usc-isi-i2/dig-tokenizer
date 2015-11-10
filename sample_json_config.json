@@ -1,19 +1,6 @@
 {
   "fieldConfig": {
     "0": {
-      "path": "image.uri",
-      "prefix": "",
-      "allow_blank":false,
-      "analyzer": {
-        "filters":[
-          "lowercase"
-        ],
-        "tokenizers":[
-          "whitespace"
-        ]
-      }
-    },
-    "1": {
       "path": "image.isSimilarTo.isSimilarTo.uri",
       "prefix": "",
       "allow_blank":false,
