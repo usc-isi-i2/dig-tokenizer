@@ -5,11 +5,15 @@ from optparse import OptionParser
 from inputParser.InputParserFactory import ParserFactory
 from rowTokenizer import RowTokenizer
 import json
+import urllib
 
 class Tokenizer:
     def __init__(self, config_filename, p_options):
         self.options = p_options
-        config_file = open(config_filename)
+        if config_filename.find("http") == 0:
+            config_file = urllib.urlopen(config_filename)
+        else:
+            config_file = open(config_filename)
         self.config = json.load(config_file)
         pass
 
