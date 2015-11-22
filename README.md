@@ -46,3 +46,24 @@ extracted.
     ~/github/dig-tokenizer/sample_json_config.json \
     ~/github/datasets/body_text/seq_tokens
 ```
+
+Recent changes to Tokenizer script :
+1. Added a new filter called mostlyHTML - if the field contains mostly html tags then it will not output
+any tokens - mostly html tags means i took a minimum of 40 tags, so if your field has more than 40 html tags
+tokenizer won't output any tokens
+2. Added an extra feature for regex replacements in config file. Now you can add "word_replacements" in replacements
+which are the regex expressions that will be applied on every word of field and "sent_replacements" which will be 
+applied on the sentence level. Please check the config file 'unicode-tokenizer.json' for how to mention and sample files
+to see the output.
+3. 
+
+
+
+
+
+
+
+
+
+
+
