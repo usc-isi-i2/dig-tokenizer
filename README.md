@@ -47,7 +47,8 @@ extracted.
     ~/github/datasets/body_text/seq_tokens
 ```
 
-Recent changes to Tokenizer script : <br />
+**Recent changes to Tokenizer script :** <br />
+<br />
 1. Added a new filter called "mostlyHTML" - if the field contains mostly html tags then it will not output
 any tokens - mostly html tags means i took a minimum of 40 tags, so if your field has more than 40 html tags
 tokenizer won't output any tokens <br />
