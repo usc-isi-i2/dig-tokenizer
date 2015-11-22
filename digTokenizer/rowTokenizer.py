@@ -115,11 +115,6 @@ class RowTokenizer:
     def __analyze_field(self, text, prefix, analyzer, settings):
         text = unicode(text)
 
-        if "replacements" in analyzer:
-            for replacement in analyzer["replacements"]:
-                p = re.compile(replacement['regex'], re.UNICODE)
-                text = p.sub(replacement['replacement'], text)
-
         if "filters" in analyzer:
             for filter_name in analyzer["filters"]:
                 if filter_name == "lowercase":
@@ -129,12 +124,43 @@ class RowTokenizer:
                 elif filter_name == "latin":
                     nfkd_form = unicodedata.normalize('NFKD', unicode(text))
                     text = unicode(nfkd_form)
+                elif filter_name == 'mostlyHTML':
+                    htmltags_count = len(re.findall("<.*?>",text))
+                    if htmltags_count > 40:
+                        text = ''
                 else:
                     filter_settings = settings[filter_name]
                     if filter_settings["type"] == "stop":
                         words = filter_settings["words"]
                         tokens = self.__tokenize_input_stopwords(text, words)
                         text = unicode(" ".join(tokens))
+
+        #evaluates based on the sent_replacements and word_replacements
+        if "replacements" in analyzer:
+            text = text.lower()
+            wordlist = []
+            if 'word_replacements' in analyzer['replacements']:
+                for word in text.split():
+                    word = word.replace('\\n','').replace('\\t','')
+                    #we shouldn't remove the word that have \u in them those are unicode characters
+                    if '\u' in word:
+                        wordlist.append(word)
+                        continue
+                    if 'href' in word or 'www' in word:
+                        continue
+                    for replacement in analyzer['replacements']['word_replacements']:
+                        p = re.compile(replacement['regex'], re.UNICODE)
+                        word = p.sub(replacement['replacement'], word)
+                    wordlist.append(word)
+                    text = " ".join(wordlist)
+            if 'sent_replacements' in analyzer['replacements']:
+                for replacement in analyzer['replacements']["sent_replacements"]:
+                    p = re.compile(replacement['regex'], re.UNICODE)
+                    text = p.sub(replacement['replacement'], text)
+                text = text.strip()
+            if len(set(text)) <= 2 or len(text) < 9:
+                text = ''
+
         tokens = []
         if "tokenizers" in analyzer:
             for tokenizer in analyzer["tokenizers"]:
@@ -154,5 +180,4 @@ class RowTokenizer:
         for token in tokens:
             if len(token) > 0:
                 final_tokens.append(prefix.encode('utf-8') + token.encode('utf-8'))
-
         return final_tokens
