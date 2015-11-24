@@ -3,6 +3,8 @@ from ngram import ngram
 import re
 import unicodedata
 import itertools
+import codecs
+import json
 
 class RowTokenizer:
     def __init__(self, row, json_config):
@@ -158,8 +160,10 @@ class RowTokenizer:
                     p = re.compile(replacement['regex'], re.UNICODE)
                     text = p.sub(replacement['replacement'], text)
                 text = text.strip()
-            if len(set(text)) <= 2 or len(text) < 9:
-                text = ''
+            elif 'word_replacements' not in analyzer['replacements'] or 'sent_replacements' not in analyzer['replacements']:
+                for replacement in analyzer["replacements"]:
+                    p = re.compile(replacement['regex'], re.UNICODE)
+                    text = p.sub(replacement['replacement'], text)
 
         tokens = []
         if "tokenizers" in analyzer:
