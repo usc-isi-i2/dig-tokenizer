@@ -15,6 +15,7 @@ config = {
                          'py4j',
                          'pyspark',
                          'digEntityMerger'],
+    # dependency_links=['http://github.com/user/repo/tarball/master#egg=package-1.0']
     # these are the subdirs of the current directory that we care about
     'packages': ['digTokenizer'],
     'scripts': [],
