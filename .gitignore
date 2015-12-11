@@ -3,3 +3,6 @@
 *.pyc
 
 digTokenizer/tokenizer.zip
+
+# emacs
+*~
