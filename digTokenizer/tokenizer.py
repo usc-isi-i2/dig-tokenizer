@@ -45,9 +45,9 @@ class Tokenizer:
 
 
 def dump_as_csv(key, values, sep):
-    line = key
+    line = str(key)
     for part in values:
-        line = line + sep + part
+        line = line + str(sep) + str(part)
     return line
 
 if __name__ == "__main__":
