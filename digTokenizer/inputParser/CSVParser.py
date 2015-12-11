@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 
-
 class CSVParser:
 
     def __init__(self, config, options):
         if options is not None:
-            self.delimiter = options.separator
+            self.delimiter = options['separator']
         else:
             self.delimiter = "\t"
 
