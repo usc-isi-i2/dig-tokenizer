@@ -1,8 +1,8 @@
 #!/usr/bin/env python
+
 import json
 
-
-class JSONParser:
+class JSONParser(object):
 
     def __init__(self, config, options):
         self.column_paths = list()
