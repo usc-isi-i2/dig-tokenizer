@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
-class CSVParser:
+class CSVParser(object):
 
     def __init__(self, config, options):
-        if options is not None:
-            self.delimiter = options['separator']
-        else:
-            self.delimiter = "\t"
+        pass
 
-    def parse(self, x):
-        return x.split(self.delimiter)[0], x.split(self.delimiter)[1:]
+    def parse(self, values):
+        """line is list of values
+returns (<first value>, <all remaining values in list>)"""
+        return (values[0], values[1:])
 
-    def parse_values(self, x):
-        return x.split(self.delimiter)
+    def parse_values(self, values):
+        """returns all values"""
+        return values
