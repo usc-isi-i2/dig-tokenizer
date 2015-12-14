@@ -8,12 +8,12 @@ class ParserFactory:
         pass
 
     @staticmethod
-    def get_parser(name, config, options, verbose=True):
+    def get_parser(name, config, verbose=True, textFormat=None, **kwargs):
         parser = None
-        if name == "csv":
-            parser = CSVParser(config, options)
-        elif name == "json":
-            parser = JSONParser(config, options)
+        if textFormat == "csv":
+            parser = CSVParser(config, verbose=verbose, **kwargs)
+        elif textFormat == "json":
+            parser = JSONParser(config, verbose=verbose, **kwargs)
         if verbose:
-            print("Parser for {} is {}".format(name, parser))
+            print("Parser for {} is {}".format(textFormat, parser))
         return parser
