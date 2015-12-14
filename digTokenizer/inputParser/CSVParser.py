@@ -2,7 +2,7 @@
 
 class CSVParser(object):
 
-    def __init__(self, config, options):
+    def __init__(self, config, **options):
         pass
 
     def parse(self, values):
