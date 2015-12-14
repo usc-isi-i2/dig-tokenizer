@@ -4,7 +4,7 @@ import json
 
 class JSONParser(object):
 
-    def __init__(self, config, options):
+    def __init__(self, config, **options):
         self.column_paths = list()
         for index in config["fieldConfig"]:
             if "path" in config["fieldConfig"][index]:
