@@ -10,12 +10,12 @@ config = {
     'url': 'https://github.com/usc-isi-i2/dig-tokenizer',
     'download_url': 'https://github.com/usc-isi-i2/dig-tokenizer',
     'author_email': 'rajagopal067@gmail.com',
-    'version': '0.3',
+    'version': '0.4.1',
     'install_requires': ['nose2',
                          'digSparkUtil'],
     # dependency_links=['http://github.com/user/repo/tarball/master#egg=package-1.0']
     # these are the subdirs of the current directory that we care about
-    'packages': ['digTokenizer'],
+    'packages': ['digTokenizer', 'digTokenizer.inputParser', 'digTokenizer.ngram'],
     'scripts': [],
 }
 
