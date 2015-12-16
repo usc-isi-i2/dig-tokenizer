@@ -1,48 +1,55 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+
+import sys
 from pyspark import SparkContext
 from optparse import OptionParser
 from digTokenizer.inputParser.InputParserFactory import ParserFactory
 from rowTokenizer import RowTokenizer
 import json
-import urllib
 from digSparkUtil.fileUtil import FileUtil
-from digSparkUtil.dictUtil import as_dict
+from digSparkUtil.dictUtil import as_dict, dict_minus
 
 class Tokenizer(object):
-    def __init__(self, config_filename, p_options):
+    def __init__(self, config_filename, **p_options):
+        self.verbose = p_options.get('verbose', False)
         self.options = as_dict(p_options)
         self.config = FileUtil.get_json_config(config_filename)
+        if self.verbose:
+            print("Tokenizer {} config with {} using options {}".format(self, self.config, self.options),
+                  file=sys.stderr)
 
     def tokenize_seq_file(self, spark_context, filename, data_type):
         """deprecated"""
         raw_data = spark_context.sequenceFile(filename)
-        input_parser = ParserFactory.get_parser(data_type, self.config, self.options)
+        input_parser = ParserFactory.get_parser(data_type, self.config, **self.options)
         if input_parser:
             data = raw_data.mapValues(lambda x: input_parser.parse_values(x))
             return self.tokenize_rdd(data)
 
     def tokenize_seq_rdd(self, rdd_input, data_type):
-        input_parser = ParserFactory.get_parser(data_type, self.config, self.options)
+        input_parser = ParserFactory.get_parser(data_type, self.config, **dict_minus(self.options, 'data_type'))
         if input_parser:
             # Each element when parsed yields a sequence to be tokenized
             rdd_parsed = rdd_input.mapValues(lambda x: input_parser.parse_values(x))
             return self.tokenize_rdd(rdd_parsed)
+        else:
+            raise ValueError("No input_parser")
 
     def tokenize_text_file(self, spark_context, filename, data_type):
         """deprecated"""
         raw_data = spark_context.textFile(filename)
-        input_parser = ParserFactory.get_parser(data_type, self.config, self.options)
+        input_parser = ParserFactory.get_parser(data_type, self.config, **self.options)
         if input_parser:
             data = raw_data.map(lambda x: input_parser.parse(x))
             return self.tokenize_rdd(data)
 
     def tokenize_text_rdd(self, rdd_input, data_type):
-        input_parser = ParserFactory.get_parser(data_type, self.config, self.options)
+        input_parser = ParserFactory.get_parser(data_type, self.config, **dict_minus(self.options, 'data_type'))
         if input_parser:
             # Each element when parsed yields a single object to be tokenized
             rdd_parsed = rdd_input.map(lambda x: input_parser.parse(x))
-            print(rdd_parsed)
             return self.tokenize_rdd(rdd_parsed)
         else:
             raise ValueError("No input parser possible for {}. {}. {}".format(data_type, self.config, self.options))
@@ -51,14 +58,21 @@ class Tokenizer(object):
         return rdd.flatMapValues(lambda row: self.__get_tokens(row))
 
     def perform(self, rdd):
-        return self.tokenize_rdd(self, rdd)
+        file_format = self.options["file_format"]
+        data_type = self.options["data_type"]
+        if file_format == "text":
+            return self.tokenize_text_rdd(rdd, data_type)
+        elif file_format == "sequence":
+            return self.tokenize_seq_rdd(rdd, data_type)
+        else:
+            raise ValueError("Unexpected file_format {}".format(data_type))
 
     def __get_tokens(self, row):
         row_tokenizer = RowTokenizer(row, self.config)
 
         line = row_tokenizer.next()
         while line:
-            #print "RETURN", line[0:100]
+            # print("RETURN", line[0:100])
             yield line
             line = row_tokenizer.next()
 
@@ -88,7 +102,7 @@ if __name__ == "__main__":
                       help="output file format: text/sequence", default="text")
 
     (c_options, args) = parser.parse_args()
-    print "Got options:", c_options
+    # print "Got options:", c_options
     inputFilename = args[0]
     configFilename = args[1]
     outputFilename = args[2]
