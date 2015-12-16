@@ -8,12 +8,14 @@ class ParserFactory:
         pass
 
     @staticmethod
-    def get_parser(name, config, verbose=True, textFormat=None, **kwargs):
+    def get_parser(data_type, config, verbose=True, text_format=None, **kwargs):
         parser = None
-        if textFormat == "csv":
+        if data_type == "csv":
             parser = CSVParser(config, verbose=verbose, **kwargs)
-        elif textFormat == "json":
+        elif data_type == "json":
             parser = JSONParser(config, verbose=verbose, **kwargs)
+        else:
+            raise ValueError("Unexpected data_type {}".format(data_type))
         if verbose:
-            print("Parser for {} is {}".format(textFormat, parser))
+            print("Parser for {} is {}".format(data_type, parser))
         return parser
