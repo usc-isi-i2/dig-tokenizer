@@ -13,6 +13,13 @@ This is an implementation of Locality Sensitive Hashing(LSH) Algorithm in python
 #### Requirements
 * Spark: Visit http://spark.apache.org/downloads.html, select the package type of “Pre-built for Hadoop 2.4 and later,” and then click on the link for “Download Spark” This will download a compressed TAR file, or tarball. Uncompress the file into ```<spark-folder>```.
 * Run `./make-spark.sh` every time to build the zip files required by spark every time you pull in new code
+* Adding python path: To import pyspark module you have add pythonpath to your bash_profile file.
+you bash_profile file should look like :
+```
+export SPARK_HOME=/Users/rajagopal/Downloads/spark-1.5.2-bin-hadoop2.6
+export PYTHONPATH=$SPARK_HOME/python/:$PYTHONPATH
+export PYTHONPATH=$SPARK_HOME/python/lib/py4j-0.8.2.1-src.zip:$PYTHONPATH
+```
 
 #### How to install
 pip install digTokenizer
