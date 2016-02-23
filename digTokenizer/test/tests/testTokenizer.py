@@ -7,11 +7,11 @@ except:
 import sys
 import argparse
 from digTokenizer.tokenizer import Tokenizer
-from digSparkUtil import FileUtil, as_dict, dict_minus, limit_rdd
+from digSparkUtil.fileUtil import FileUtil, as_dict
+from digSparkUtil.dictUtil import dict_minus
 
 def testTokenizer(sc, input_dir, output_dir, config,
                   limit=None, 
-                  debug=0, 
                   input_file_format="sequence",
                   input_data_type="json",
                   output_file_format="sequence",
@@ -26,10 +26,6 @@ def testTokenizer(sc, input_dir, output_dir, config,
     rdd_ingest = futil.load_file(input_dir, file_format=input_file_format, 
                                  data_type=input_data_type)
     rdd_ingest.setName('rdd_ingest_input')
-
-    ## (optionally) LIMIT
-
-    rdd_limited = limit_rdd(rdd_ingest, limit=limit or None)
 
     ## TOKENIZE
     tokOptions = {"file_format": input_file_format,
