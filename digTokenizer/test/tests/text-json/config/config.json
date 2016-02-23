@@ -1,7 +1,7 @@
 {
   "fieldConfig": {
     "0": {
-      "path": ".description",
+      "path": "description",
       "allow_blank":false
     }
   },

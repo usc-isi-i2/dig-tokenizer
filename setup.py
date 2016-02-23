@@ -28,7 +28,7 @@ config = {
     'author': 'Rajagopal Bojanapalli',
     'url': 'https://github.com/usc-isi-i2/dig-tokenizer',
     'download_url': 'https://github.com/usc-isi-i2/dig-tokenizer',
-    'author_email': 'rajagopal067@gmail.com',
+    'author_email': 'bojanapa@usc.edu',
     'install_requires': ['nose2',
                          'digSparkUtil',
                          'jq'],
