@@ -42,8 +42,7 @@ class JSONParser(object):
         fields = []
         for path in paths:
             x = list(self.__extract_at_path(row, path))
-            if (len(x) > 0):
-                x = [' '.join(x)]
+            x = [' '.join(x)]
             fields.append(x)
         return fields
 
