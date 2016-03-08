@@ -29,7 +29,18 @@ class Tokenizer(object):
                 if len(x) > 0:
                     return False
             return True
-        return rdd_out.filter(lambda x: not check_if_empty(x[1]))
+
+        rdd_filtered = rdd_out.filter(lambda x: not check_if_empty(x[1]))
+
+        def concat_lists(listOfList):
+            res = []
+            for x in listOfList:
+                for a in x:
+                    res.append(a)
+            return res
+
+        rdd_result = rdd_filtered.mapValues(lambda x: concat_lists(x))
+        return rdd_result
 
     # In: URI => JSON
     # Out: URI => ( [column_path1_stringresult1, column_path1_stringresult2 ..], [column_path2_stringresult1 ..] )
