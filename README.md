@@ -2,7 +2,7 @@ dig-tokenizer is a python library which will produce tokens with different optio
 
 dig-tokenizer will help you:
 * Generate tokens of your choice using a simple config file.
-* Perform clustering based on the tokens generated using the library [dig-lsh-clustering](https://github.com/usc-isi-i2/dig-lsh-clustering/tree/devel)
+* Perform clustering based on the tokens generated using the library [dig-lsh-clustering](https://github.com/usc-isi-i2/dig-lsh-clustering)
 
 
 #### Tools built with dig-tokenizer:
@@ -33,7 +33,7 @@ python digTokenizer/test/testTokenizer.py -i input \
       --config digTokenizer/test/tests/text-json/config/config.json \
       --output_file_format text
 ```
-If you want to import this library into your code please check [here](https://github.com/usc-isi-i2/dig-tokenizer/blob/devel/digTokenizer/test/testTokenizer.py) for the usage. 
+If you want to import this library into your code please check [here](https://github.com/usc-isi-i2/dig-tokenizer/blob/master/digTokenizer/test/tests/testTokenizer.py) for the usage. 
 
 
 #### Examples
@@ -125,7 +125,7 @@ And config file looks like as follows :
 
 #### Regex expressions :
 * If you want to apply some regex expressions on the fields you can add them in the config file. Two kinds of options are available. 
- * Word level regexes : You can check the example of those expressions click here [word regex](https://github.com/usc-isi-i2/dig-tokenizer/blob/master/unicode-tokenizer.json#L12)
+ * Word level regexes : You can check the example of those expressions click here [word regex](https://github.com/usc-isi-i2/dig-tokenizer/blob/old/unicode-tokenizer.json#L12)
 Format is as follows :
 ```
             {
@@ -134,13 +134,13 @@ Format is as follows :
               "desc": "<description>"
             }
 ```
- * Sentence level regexes : You can check the example of those expressions click here [sent regex config](https://github.com/usc-isi-i2/dig-tokenizer/blob/master/unicode-tokenizer.json#L40)
+ * Sentence level regexes : You can check the example of those expressions click here [sent regex config](https://github.com/usc-isi-i2/dig-tokenizer/blob/old/unicode-tokenizer.json#L40)
 Format is same.
 
 The reason for allowing two types is the regex expression you want to match may not be a complete in a word, but it's a complete match over the complete sentence (if the field has more than one word)
 
 #### Stop words :
-If you don't want to emit tokens for some words you can add them in stop words list present in config file click here [stop words config](https://github.com/usc-isi-i2/dig-tokenizer/blob/master/unicode-tokenizer.json#L141)
+If you don't want to emit tokens for some words you can add them in stop words list present in config file click here [stop words config](https://github.com/usc-isi-i2/dig-tokenizer/blob/old/unicode-tokenizer.json#L141)
 ```
 "stop_default": {
                   "type": "stop",
@@ -149,7 +149,7 @@ If you don't want to emit tokens for some words you can add them in stop words l
 ```
 
 #### Default Config:
-If you hate writing seperate type of configuration for every field you can write a default config click here [default config example](https://github.com/usc-isi-i2/dig-tokenizer/blob/master/unicode-tokenizer.json#L99)
+If you hate writing seperate type of configuration for every field you can write a default config click here [default config example](https://github.com/usc-isi-i2/dig-tokenizer/blob/old/unicode-tokenizer.json#L99)
 ```
 "defaultConfig": {
     "analyzer": {
@@ -170,7 +170,7 @@ If you hate writing seperate type of configuration for every field you can write
     }
   }
 ```
-At the end you can see complete config file with all the options [config file with all the options](https://github.com/usc-isi-i2/dig-tokenizer/blob/master/unicode-tokenizer.json)
+At the end you can see complete config file with all the options [config file with all the options](https://github.com/usc-isi-i2/dig-tokenizer/blob/old/unicode-tokenizer.json)
 
 
 
