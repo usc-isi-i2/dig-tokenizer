@@ -20,9 +20,16 @@ class Tokenizer(object):
     def perform(self, rdd):
         file_format = self.options["file_format"]
         if file_format == "text":
-            return self.tokenize_text_rdd(rdd)
+            rdd_out = self.tokenize_text_rdd(rdd)
         elif file_format == "sequence":
-            return self.tokenize_seq_rdd(rdd)
+            rdd_out = self.tokenize_seq_rdd(rdd)
+
+        def check_if_empty(listOfList):
+            for x in listOfList:
+                if len(x) > 0:
+                    return False
+            return True
+        return rdd_out.filter(lambda x: not check_if_empty(x[1]))
 
     # In: URI => JSON
     # Out: URI => ( [column_path1_stringresult1, column_path1_stringresult2 ..], [column_path2_stringresult1 ..] )
