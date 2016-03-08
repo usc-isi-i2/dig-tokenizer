@@ -15,6 +15,7 @@ class Tokenizer(object):
     def __init__(self, config_filename, **p_options):
         self.options = as_dict(p_options)
         self.config = FileUtil.get_json_config(config_filename)
+        print('In tokenizer')
 
     def perform(self, rdd):
         file_format = self.options["file_format"]
@@ -32,6 +33,8 @@ class Tokenizer(object):
             # to be tokenized, and each string yields a list of tokens
             # corresponding to one per input column_path
             rdd_parsed = rdd_input.mapValues(lambda x: input_parser.parse_values(x))
+            if(self.options.get("emptylines") == 'False'):
+                rdd_parsed = rdd_parsed.filter(lambda x : self.filter_emptylines(x))
             return self._tokenize_rdd(rdd_parsed)
         else:
             raise ValueError("No input_parser")
@@ -42,8 +45,17 @@ class Tokenizer(object):
             # TEXT (NEW): Each RDD element when parsed yields a tuple of strings
             # to be tokenized, and each string yields a list of tokens
             # corresponding to one per input column_path
+            print('got parsed')
             rdd_parsed = rdd_input.mapValues(lambda x: input_parser.parse_values(x))
+            if(self.options.get("emptylines") == 'False'):
+                rdd_parsed = rdd_parsed.filter(lambda x : self.filter_emptylines(x))
             return self._tokenize_rdd(rdd_parsed)
+
+    def filter_emptylines(self,x):
+        field_length=0
+        for elem in x[1]:
+            field_length +=len(elem[0])
+        return field_length>0
 
     def _tokenize_rdd(self, rdd):
         def concatenated_row_tokens(tpl):
