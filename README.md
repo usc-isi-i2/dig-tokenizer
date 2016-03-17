@@ -44,7 +44,7 @@ To run this code, you have to input a config file which specifies how tokens sho
 {
   "fieldConfig": {
     "0": {
-      "path": ".description",
+      "path": "description",
       "allow_blank":false
     }
   },
