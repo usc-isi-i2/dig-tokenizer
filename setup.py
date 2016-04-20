@@ -30,7 +30,7 @@ config = {
     'download_url': 'https://github.com/usc-isi-i2/dig-tokenizer',
     'author_email': 'bojanapa@usc.edu',
     'install_requires': [
-                         'digSparkUtil',
+                         'digSparkUtil'
                          ],
     # dependency_links=['http://github.com/user/repo/tarball/master#egg=package-1.0']
     # these are the (sub)modules of the current directory that we care about
